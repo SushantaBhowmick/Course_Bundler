@@ -30,9 +30,15 @@ const Home = () => {
                     <VStack
                         width={"full"}
                         alignItems={["center", "flex-end"]}
+                        spacing={"8"}
                     >
-                        <Heading children={"LEARN FROM THE EXPERT"} />
-                        <Text children="Find Valuable Content At Resonable Price" />
+                        <Heading textAlign={['center','left']} size={'2xl'} children={"LEARN FROM THE EXPERT"} />
+                        <Text 
+                        textAlign={['center','left']}
+                        children="Find Valuable Content At Resonable Price" 
+                        fontFamily={'roboto'}
+                        fontSize={'2xl'}
+                        />
                         <Link to={'/courses'} children='hi' >
                             <Button size={'lg'} colorScheme='yellow'>
                                 Explore Now
