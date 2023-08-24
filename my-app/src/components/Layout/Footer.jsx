@@ -19,19 +19,19 @@ const Footer = () => {
             </VStack>
             <HStack spacing={['2','10']} justifyContent={'center'} color={'white'} fontSize={['40','50']}>
                 
-            <Link to={'https://youtube.com'} target='_blank'>
+            <Link to={'https://youtube.com'} target='blank'>
             <TiSocialYoutubeCircular />
             </Link>
 
-            <Link to={'https://www.instagram.com/sushanta8514/'} target='_blank'>
+            <Link to={'https://www.instagram.com/sushanta8514/'} target='blank'>
             <TiSocialInstagramCircular />
             </Link>
 
-            <Link to={'https://github.com/SushantaBhowmick'} target='_blank'>
+            <Link to={'https://github.com/SushantaBhowmick'} target='blank'>
             <DiGithub />
             </Link>
 
-            <Link to={'https://twitter.com/Sushant31147320'} target='_blank'>
+            <Link to={'https://twitter.com/Sushant31147320'} target='blank'>
             <TiSocialTwitterCircular />
             </Link>
             </HStack>

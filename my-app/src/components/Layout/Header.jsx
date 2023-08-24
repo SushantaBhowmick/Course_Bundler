@@ -115,7 +115,7 @@ const logoutHandler =()=>{
                             </Button>
                         </Link>
                         <p>OR</p>
-                        <Link to={'/signup'} onClick={onClose} >
+                        <Link to={'/register'} onClick={onClose} >
                         <Button colorScheme='yellow'>
                             <MdAndroid  />
                             Signup

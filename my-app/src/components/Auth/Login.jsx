@@ -36,7 +36,7 @@ const Login = () => {
             />
             </Box>
            <Box>
-           <Link to={'/forgotpassoword'}>
+           <Link to={'/forgotpassword'}>
             <Button variant={'link'} fontSize={'sm'}>
                 Forgot Password?
             </Button>
