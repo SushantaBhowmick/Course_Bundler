@@ -43,7 +43,7 @@ const Login = () => {
             </Link>
            </Box>
 
-            <Button my={'4'} colorScheme='yellow'>Login</Button>
+            <Button my={'4'} colorScheme='yellow' type='submit' >Login</Button>
 
             <Box my='4'>
                 New User? <Link to='/register'>

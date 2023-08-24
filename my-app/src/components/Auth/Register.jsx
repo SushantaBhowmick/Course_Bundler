@@ -91,7 +91,7 @@ const Register = () => {
             />
             </Box>
 
-            <Button my={'4'} colorScheme='yellow'>Sign Up</Button>
+            <Button my={'4'} colorScheme='yellow' type='submit'>Sign Up</Button>
 
             <Box my='4' mb={'8'}>
                 Already Signed Up? <Link to='/login'>

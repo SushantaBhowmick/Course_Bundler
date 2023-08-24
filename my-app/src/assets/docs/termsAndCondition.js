@@ -198,7 +198,7 @@ asasddasd
 Howrah, WB 711314
 India
 Phone: __________
-official.mymaildevelopers@gmail.com
+official.mymaildevelopers1@gmail.com
 
 `;
 
