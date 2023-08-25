@@ -78,7 +78,6 @@ const Home = () => {
                 disableRemotePlayback
                 src={introVideo}
                 >
-
                 </video>
             </div>
         </section>

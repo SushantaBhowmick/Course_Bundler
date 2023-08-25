@@ -22,7 +22,7 @@ import {
 import { Link } from 'react-router-dom'
 
 const Header = () => {
-    const isAuthenticated = false;
+    const isAuthenticated = true;
 
     
     const LinkButton = ({url="/",title="Home",onClose})=>(
@@ -50,6 +50,7 @@ const logoutHandler =()=>{
    height={"12"}
    rounded={"full"}
    position={'fixed'}
+   zIndex={'overlay'}
    left={'4'}
    top={'4'}
    >

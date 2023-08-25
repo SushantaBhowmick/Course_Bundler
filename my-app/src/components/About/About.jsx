@@ -67,7 +67,7 @@ const About = () => {
                     We are a video streaming platfrom with some premium courses available only for premium users.
                 </Text>
 
-                <Link to={'subscribe'}>
+                <Link to={'/subscribe'}>
                     <Button colorScheme='yellow' variant={'ghost'}>CheckOut Our Plan</Button>
                 </Link>
             </Stack>
