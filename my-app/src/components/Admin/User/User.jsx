@@ -1,6 +1,9 @@
 import React from 'react'
 import cursor from '../../../assets/images/cursor.png'
-import { Box, Grid } from '@chakra-ui/react'
+import { 
+  Box,
+  Grid, 
+} from '@chakra-ui/react'
 import Sidebar from '../Sidebar'
 
 
@@ -11,7 +14,10 @@ const User = () => {
     templateColumns={['3fr','5fr 1fr']}
     css={{cursor:`url(${cursor}), default`}}
     >
-        <Box></Box>
+        <Box
+        
+        >
+        </Box>
         <Sidebar />
 
     </Grid>
