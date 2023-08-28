@@ -1,4 +1,5 @@
 import express from 'express'
+import cookieParser from 'cookie-parser';
 import {config} from 'dotenv'
 import ErrorMiddleware from './middlewares/Error.js';
 const app = express();
@@ -11,6 +12,7 @@ config({
 //using middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended:true,}))
+app.use(cookieParser())
 
 
 //importing Routes
