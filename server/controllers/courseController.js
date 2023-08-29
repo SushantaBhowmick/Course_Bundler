@@ -73,6 +73,10 @@ export const addLectures = catachAsyncErrors(async (req, res, next) => {
     const { id } = req.params;
     const { title, description } = req.body;
 
+    
+    const course = await Course.findById(id);
+    if (!course) return next(new ErrorHandler("Course Not Found", 404))
+
     const file = req.file;
 
     const fileUri = getDataUri(file);
@@ -80,8 +84,6 @@ export const addLectures = catachAsyncErrors(async (req, res, next) => {
         resource_type:"video"
     })
 
-    const course = await Course.findById(id);
-    if (!course) return next(new ErrorHandler("Course Not Found", 404))
 
     course.lectures.push({
         title,

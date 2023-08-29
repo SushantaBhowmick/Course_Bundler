@@ -4,14 +4,16 @@ import { Course } from "../models/Course.js"
 import ErrorHandler from "../utils/ErrorHandler.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { sendToken } from "../utils/sendToken.js";
-import crypto from 'crypto'
+import crypto from 'crypto';
+import cloudinary from 'cloudinary'
+import getDataUri from "../utils/dataUri.js";
 
 
 //register
 export const register = catachAsyncErrors(async (req, res, next) => {
     const { name, email, password } = req.body;
 
-    // const file = req.file
+    
     if (!name || !email || !password)
         return next(new ErrorHandler("Please enter all fields", 400))
 
@@ -19,14 +21,19 @@ export const register = catachAsyncErrors(async (req, res, next) => {
     if (user) return next(new ErrorHandler("User already exists", 400))
 
     //upload file on cloudinary
+    const file = req.file;
+
+    const fileUri = getDataUri(file);
+    const myCloud = await cloudinary.v2.uploader.upload(fileUri.content)
+
 
     user = await User.create({
         name,
         email,
         password,
         avatar: {
-            public_id: "tempId",
-            url: "tempUrl"
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
         }
     })
     sendToken(res, user, "Register Successfully", 201)
@@ -37,7 +44,6 @@ export const register = catachAsyncErrors(async (req, res, next) => {
 export const login = catachAsyncErrors(async (req, res, next) => {
     const { email, password } = req.body;
 
-    // const file = req.file
     if (!email || !password)
         return next(new ErrorHandler("Please enter all fields", 400))
 
@@ -116,8 +122,20 @@ export const updateProfile = catachAsyncErrors(async (req, res, next) => {
 //updateProfile picture
 export const updateProfilePicture = catachAsyncErrors(async (req, res, next) => {
 
-    //cloudinary todo
+    const user = await User.findById(req.user._id)
+    const file = req.file;
 
+    const fileUri = getDataUri(file);
+    const myCloud = await cloudinary.v2.uploader.upload(fileUri.content)
+
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+
+    user.avatar ={
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url, 
+    }
+
+    await user.save();
 
     res.status(200).json({
         success: true,
@@ -232,6 +250,20 @@ export const removeFromPlayList = catachAsyncErrors(async (req, res, next) => {
 
 })
 
+
+//delete My profile
+export const deleteMyProfile = catachAsyncErrors(async(req,res,next)=>{
+    const user = await User.findById(req.user._id)
+
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+
+    await user.deleteOne()
+
+    res.status(200).json({
+        success: true,
+        message: "Profile Deleted Successfully",
+    })
+})
 
 
 
