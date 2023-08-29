@@ -23,7 +23,7 @@ password:{
     minLength:[6,"Password must be at least 6 character"],
     select:false,
 },
-Role:{
+role:{
     type:String,
     enum:["admin","user"],
     default:"user"
