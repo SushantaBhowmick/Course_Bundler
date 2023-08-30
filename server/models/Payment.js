@@ -2,22 +2,20 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-title:{
-    type:String,
-    required:[true,"Please enter course title"],
-    minLength:[4,"Title must be atleast 4 character"],
-    maxLength:[80,"Title can't exceed 80 character"],
-},
-description:{
-    type:String,
-    required:[true,"Please enter course description"],
-    minLength:[20,"Title must be atleast 4 character"],
-},
-
-CreatedBy:{
+    razorpay_signature:{
+        type: String,
+        required:true,
+    },razorpay_payment_id:{
+        type: String,
+        required:true,
+    },razorpay_subcription_id:{
+        type: String,
+        required:true,    
+    },
+CreatedAt:{
     type:Date,
     default:Date.now,
 },
 })
 
-export const Payment = mongoose.model("Payment",schema)
+export const Payment = mongoose.model("Payment",schema);
