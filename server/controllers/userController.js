@@ -254,23 +254,72 @@ export const removeFromPlayList = catachAsyncErrors(async (req, res, next) => {
 //delete My profile
 export const deleteMyProfile = catachAsyncErrors(async(req,res,next)=>{
     const user = await User.findById(req.user._id)
+    if(!user) return next(new ErrorHandler("User Not Found",404))
 
     await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+
+    //cancel Subcription
+
+    await user.deleteOne()
+
+    res.status(200).cookie("token",null,{
+        expires:new Date(Date.now())
+    }).json({
+        success: true,
+        message: "User Deleted Successfully",
+    })
+})
+
+
+//get all user - admin
+
+export const getAllUser = catachAsyncErrors(async (req, res, next) => {
+    const user = await User.find({});
+
+    // sendToken(res,user,"Successfully get all user",200)
+    res.status(200).json({
+        success:true,
+        user
+    })
+
+})
+
+//update user role -admin
+
+export const updateUserRole = catachAsyncErrors(async (req, res, next) => {
+    const {id} = req.params;
+
+    const user = await User.findById(id);
+    if(!user) return next(new ErrorHandler("User Not Found",404))
+
+    if(user.role === 'user'){
+        user.role = 'admin'
+    }else{
+    user.role = "user";
+    }
+     await user.save()
+
+    res.status(200).json({
+        success:true,
+        message:"User Role Updated",
+        user
+    })
+
+})
+
+//delete user -admin
+export const deleteUser = catachAsyncErrors(async(req,res,next)=>{
+    const user = await User.findById(req.params.id)
+    if(!user) return next(new ErrorHandler("User Not Found",404))
+
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+
+    //cancel Subcription
 
     await user.deleteOne()
 
     res.status(200).json({
         success: true,
-        message: "Profile Deleted Successfully",
+        message: "User Deleted Successfully",
     })
-})
-
-
-
-export const getAllUser = catachAsyncErrors(async (req, res, next) => {
-    const user = await User.find();
-
-    // sendToken(res,user,"Successfully get all user",200)
-    res.send(user)
-
 })
