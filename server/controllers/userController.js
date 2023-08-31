@@ -7,13 +7,14 @@ import { sendToken } from "../utils/sendToken.js";
 import crypto from 'crypto';
 import cloudinary from 'cloudinary'
 import getDataUri from "../utils/dataUri.js";
+import { Stats } from '../models/Stats.js'
 
 
 //register
 export const register = catachAsyncErrors(async (req, res, next) => {
     const { name, email, password } = req.body;
 
-    
+
     if (!name || !email || !password)
         return next(new ErrorHandler("Please enter all fields", 400))
 
@@ -130,9 +131,9 @@ export const updateProfilePicture = catachAsyncErrors(async (req, res, next) => 
 
     await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
-    user.avatar ={
+    user.avatar = {
         public_id: myCloud.public_id,
-        url: myCloud.secure_url, 
+        url: myCloud.secure_url,
     }
 
     await user.save();
@@ -207,17 +208,17 @@ export const addtoPlayList = catachAsyncErrors(async (req, res, next) => {
 
     const course = await Course.findById(req.body.id)
 
-    if(!course) return next(new ErrorHandler("Invalid Course Id",404))
+    if (!course) return next(new ErrorHandler("Invalid Course Id", 404))
 
-    const itemExits = user.playlist.find((item)=>{
-        if(item.course.toString()=== course._id.toString()) return true;
+    const itemExits = user.playlist.find((item) => {
+        if (item.course.toString() === course._id.toString()) return true;
     })
 
-    if(itemExits) return next(new ErrorHandler("Item Already Exits",409))
+    if (itemExits) return next(new ErrorHandler("Item Already Exits", 409))
 
     user.playlist.push({
-        course:course._id,
-        poster:course.poster.url,
+        course: course._id,
+        poster: course.poster.url,
     })
     await user.save();
     res.status(200).json({
@@ -234,10 +235,10 @@ export const removeFromPlayList = catachAsyncErrors(async (req, res, next) => {
 
     const course = await Course.findById(req.query.id)
 
-    if(!course) return next(new ErrorHandler("Invalid Course Id",404))
+    if (!course) return next(new ErrorHandler("Invalid Course Id", 404))
 
-    const newPlaylist = user.playlist.filter((item)=>{
-        if(item.course.toString() !== course._id.toString()) return item
+    const newPlaylist = user.playlist.filter((item) => {
+        if (item.course.toString() !== course._id.toString()) return item
     })
 
     user.playlist = newPlaylist;
@@ -252,9 +253,9 @@ export const removeFromPlayList = catachAsyncErrors(async (req, res, next) => {
 
 
 //delete My profile
-export const deleteMyProfile = catachAsyncErrors(async(req,res,next)=>{
+export const deleteMyProfile = catachAsyncErrors(async (req, res, next) => {
     const user = await User.findById(req.user._id)
-    if(!user) return next(new ErrorHandler("User Not Found",404))
+    if (!user) return next(new ErrorHandler("User Not Found", 404))
 
     await cloudinary.v2.uploader.destroy(user.avatar.public_id)
 
@@ -262,8 +263,8 @@ export const deleteMyProfile = catachAsyncErrors(async(req,res,next)=>{
 
     await user.deleteOne()
 
-    res.status(200).cookie("token",null,{
-        expires:new Date(Date.now())
+    res.status(200).cookie("token", null, {
+        expires: new Date(Date.now())
     }).json({
         success: true,
         message: "User Deleted Successfully",
@@ -278,7 +279,7 @@ export const getAllUser = catachAsyncErrors(async (req, res, next) => {
 
     // sendToken(res,user,"Successfully get all user",200)
     res.status(200).json({
-        success:true,
+        success: true,
         user
     })
 
@@ -287,30 +288,30 @@ export const getAllUser = catachAsyncErrors(async (req, res, next) => {
 //update user role -admin
 
 export const updateUserRole = catachAsyncErrors(async (req, res, next) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const user = await User.findById(id);
-    if(!user) return next(new ErrorHandler("User Not Found",404))
+    if (!user) return next(new ErrorHandler("User Not Found", 404))
 
-    if(user.role === 'user'){
+    if (user.role === 'user') {
         user.role = 'admin'
-    }else{
-    user.role = "user";
+    } else {
+        user.role = "user";
     }
-     await user.save()
+    await user.save()
 
     res.status(200).json({
-        success:true,
-        message:"User Role Updated",
+        success: true,
+        message: "User Role Updated",
         user
     })
 
 })
 
 //delete user -admin
-export const deleteUser = catachAsyncErrors(async(req,res,next)=>{
+export const deleteUser = catachAsyncErrors(async (req, res, next) => {
     const user = await User.findById(req.params.id)
-    if(!user) return next(new ErrorHandler("User Not Found",404))
+    if (!user) return next(new ErrorHandler("User Not Found", 404))
 
     await cloudinary.v2.uploader.destroy(user.avatar.public_id)
 
@@ -322,4 +323,18 @@ export const deleteUser = catachAsyncErrors(async(req,res,next)=>{
         success: true,
         message: "User Deleted Successfully",
     })
+})
+
+User.watch().on("change", async () => {
+
+    const stats = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
+
+    const subscription = await User.find({ "subcription.status": "active" });
+
+    stats[0].users = await User.countDocuments();
+    stats[0].subscription = subscription.length;
+    stats[0].createdAt = new Date(Date.now());
+
+    await stats[0].save();
+
 })
