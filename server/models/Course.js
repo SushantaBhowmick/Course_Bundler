@@ -62,7 +62,7 @@ createdBy:{
     type:String,
     required:[true,"Enter Course Creator Name"],
 },
-CreatedAt:{
+createdAt:{
     type:Date,
     default:Date.now,
 },

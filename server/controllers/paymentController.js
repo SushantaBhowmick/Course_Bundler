@@ -78,7 +78,7 @@ export const cancelSubcription = catachAsyncErrors(async(req,res,next)=>{
     razorpay_subcription_id: subcriptionId,
  });
 
- const gap = Date.now() - payment.CreatedAt;
+ const gap = Date.now() - payment.createdAt;
  const refundTime = process.env.REFUND_DAYS * 24 * 60 * 60 * 1000;
 
  if(refundTime>gap){
