@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Home from './components/Home/Home';
 import Layout from './components/Layout/Layout';
@@ -22,12 +22,29 @@ import Dashboard from './components/Admin/Dashboard/Dashboard';
 import CreateCourse from './components/Admin/CreateCourse/CreateCourse';
 import AdminCourses from './components/Admin/AdminCourses/AdminCourses';
 import User from './components/Admin/User/User';
+import { useDispatch, useSelector } from 'react-redux';
+import toast, {Toaster} from 'react-hot-toast'
 
 function App() {
 
   window.addEventListener('contextmenu',e=>{
     e.preventDefault();
   })
+
+  const {isAuthenticated,user,error,message} = useSelector(state=>state.user)
+
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    if (error) {
+      toast.error(error)
+      dispatch({type:'clearError'});
+    }
+    if (message) {
+      toast.success(message)
+      dispatch({type:'clearMessage'});
+    }
+  },[dispatch,error,message])
 
   return (
     <Router>
@@ -59,6 +76,7 @@ function App() {
 
        </Route>
       </Routes>
+       <Toaster />  
     </Router>
     );
 }
