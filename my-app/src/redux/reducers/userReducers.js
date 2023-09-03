@@ -8,7 +8,6 @@ export const userReducer = createReducer({},{
         state.loading= false;
         state.isAuthenticated= true;
         state.user = action.payload.user;
-        state.token = action.payload.token;
         state.message = action.payload.message;
     },
     loginFail:(state,action)=>{

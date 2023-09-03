@@ -15,9 +15,6 @@ export const login = (email, password) => async (dispatch) => {
         }
         );
 
-        // localStorage.setItem('token',JSON.stringify(data.token))
-
-        console.log(data)
         dispatch({ type: 'loginSuccess', payload: data });
 
 
@@ -52,7 +49,6 @@ export const logout = () => async (dispatch) => {
             withCredentials: true,
         }
         );
-        console.log(data)
         dispatch({ type: 'logoutSuccess', payload: data.message });
 
     } catch (error) {

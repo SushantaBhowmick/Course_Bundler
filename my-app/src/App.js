@@ -35,6 +35,7 @@ function App() {
   })
 
   const {isAuthenticated,user,error,message} = useSelector(state=>state.user)
+  // const isAuthenticated = localStorage.getItem("token");
 
   const dispatch = useDispatch()
 
