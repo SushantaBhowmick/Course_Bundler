@@ -27,6 +27,7 @@ import toast, {Toaster} from 'react-hot-toast'
 import { loadUser } from './redux/actions/userAction';
 import {ProtectedRoute} from 'protected-route-react'
 
+
 function App() {
 
   window.addEventListener('contextmenu',e=>{
@@ -59,7 +60,9 @@ useEffect(()=>{
        <Route path='' element={<Home />} />
        <Route path='courses' element={<Courses />} />
        <Route path='course/:id' element={<CourseDetails />} />
-       <Route path='login' element={<Login />} />
+       <Route path='login' element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect='/profile'>
+        <Login />
+       </ProtectedRoute>} />
 
        <Route path='profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} >
         <Profile />
@@ -86,7 +89,9 @@ useEffect(()=>{
 
        </Route>
       </Routes>
-       <Toaster />  
+       <Toaster
+       position='top-right'
+       />  
     </Router>
     );
 }

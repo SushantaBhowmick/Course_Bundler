@@ -20,7 +20,8 @@ import {
 } from 'react-icons/ri'
 import { MdAndroid } from "react-icons/md";
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/actions/userAction';
 
 const Header = ({ isAuthenticated = false, user }) => {
 
@@ -33,9 +34,10 @@ const Header = ({ isAuthenticated = false, user }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const dispatch = useDispatch();
 
     const logoutHandler = () => {
-        console.log('logout')
+        dispatch(logout())
         onClose()
     }
     return (

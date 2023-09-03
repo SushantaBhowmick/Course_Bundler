@@ -2,6 +2,12 @@ import {configureStore} from '@reduxjs/toolkit';
 import { userReducer } from './reducers/userReducers';
 
 
+// let initialState = {
+//     user:{
+//         user:localStorage.
+//     }
+// }
+
 const store = configureStore({
     reducer:{
         user: userReducer
