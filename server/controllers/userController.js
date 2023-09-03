@@ -60,15 +60,15 @@ export const login = catachAsyncErrors(async (req, res, next) => {
 
 //logout 
 export const logout = catachAsyncErrors(async (req, res, next) => {
-
-    res.cookie("token", null, {
+    res.status(200)
+        .cookie("token", null, {
             expires: new Date(Date.now()),
             httpOnly: false,
             secure: true,
             sameSite: "None",
             withCredentials: true,
-        });
-        res.status(200).json({
+        domain:".vercel.app"
+        }).json({
             success: true,
             message: "Logged Out successfully!"
         })
