@@ -8,7 +8,6 @@ export const sendToken = (res, user, message, statusCode = 200) => {
         secure: true,
         sameSite: "None",
         withCredentials: true,
-        domain:".vercel.app"
     }
 
     res.status(statusCode).cookie("token", token, options).json({
