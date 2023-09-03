@@ -24,6 +24,7 @@ import AdminCourses from './components/Admin/AdminCourses/AdminCourses';
 import User from './components/Admin/User/User';
 import { useDispatch, useSelector } from 'react-redux';
 import toast, {Toaster} from 'react-hot-toast'
+import { loadUser } from './redux/actions/userAction';
 
 function App() {
 
@@ -45,6 +46,10 @@ function App() {
       dispatch({type:'clearMessage'});
     }
   },[dispatch,error,message])
+
+useEffect(()=>{
+  dispatch(loadUser())
+},[dispatch])
 
   return (
     <Router>
