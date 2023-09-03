@@ -63,7 +63,7 @@ export const logout = catachAsyncErrors(async (req, res, next) => {
     res.status(200)
         .cookie("token", null, {
             expires: new Date(Date.now()),
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: "None",
             withCredentials: true,
