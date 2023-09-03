@@ -65,7 +65,7 @@ export const logout = catachAsyncErrors(async (req, res, next) => {
             expires: new Date(Date.now()),
             httpOnly: true,
             secure: true,
-            sameSite: "None",
+            sameSite: "none",
         }).json({
             success: true,
             message: "Logged Out successfully!"
