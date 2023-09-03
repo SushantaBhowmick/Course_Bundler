@@ -25,6 +25,7 @@ import User from './components/Admin/User/User';
 import { useDispatch, useSelector } from 'react-redux';
 import toast, {Toaster} from 'react-hot-toast'
 import { loadUser } from './redux/actions/userAction';
+import {ProtectedRoute} from 'protected-route-react'
 
 function App() {
 
@@ -59,7 +60,11 @@ useEffect(()=>{
        <Route path='courses' element={<Courses />} />
        <Route path='course/:id' element={<CourseDetails />} />
        <Route path='login' element={<Login />} />
-       <Route path='profile' element={<Profile />} />
+
+       <Route path='profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} >
+        <Profile />
+       </ProtectedRoute>} />
+
        <Route path='updateprofile' element={<UpdateProfile />} />
        <Route path='changepassword' element={<ChanagePassword />} />
        <Route path='register' element={<Register />} />
