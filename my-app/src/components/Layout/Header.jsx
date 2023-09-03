@@ -33,11 +33,6 @@ const Header = ({ isAuthenticated = false, user }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    //     const {} = useSelector(state=>state.user)
-
-    // const user = {
-    //     role:"admin",
-    // }
 
     const logoutHandler = () => {
         console.log('logout')

@@ -9,7 +9,7 @@ export const login = (email, password) => async (dispatch) => {
          { email, password }, 
          {
             headers: {
-                 'Content-Type': 'application/json'
+                 'Content-Type': 'application/json',
                  },
             withCredentials: true,
         }
