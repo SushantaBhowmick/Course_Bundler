@@ -18,38 +18,46 @@ import {
     VStack,
     useDisclosure
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiDeleteBin7Fill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import { fileUploadCss } from '../Auth/Register'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateProfilePicture } from '../../redux/actions/profileAction'
+import { loadUser } from '../../redux/actions/userAction'
+import { toast } from 'react-hot-toast'
 
-const Profile = () => {
+const Profile = ({user}) => {
+    const {isOpen, onClose,onOpen} =useDisclosure();
+    const dispatch = useDispatch();
+    const {loading,error,message} = useSelector(state=>state.profile)
 
-    const user={
-        name:"Sushanta Bhowmick",
-        email:"bhosushanta922@gmail.com",
-        createdAt:new Date().toISOString(),
-        role:"user",
-        subscription:{
-            status:"active"
-        },
-        playlist:[
-            {
-                course:'Cashfiash',
-                poster:'https://cdn.pixabay.com/photo/2017/05/10/19/29/robot-2301646_960_720.jpg'
-            }
-        ]
 
-    }
-   const changeImageSubmitHandler=(e,image)=>{
-    e.preventDefault();
-    console.log(image)
+   const changeImageSubmitHandler=async(e,image)=>{
+
+        e.preventDefault();
+
+        const myForm = new FormData();
+        myForm.append("file",image);
+
+        await dispatch(updateProfilePicture(myForm));
+        dispatch(loadUser())
    }
 
     const removeFromPlaylistHandle =(id)=>{
         alert(`Course Deleted Successfully ${id}`)
     }
-const {isOpen, onClose,onOpen} =useDisclosure()
+
+    useEffect(()=>{
+      if (error) {
+        toast.error(error)
+        dispatch({type:'clearError'});
+      }
+      if (message) {
+        toast.success(message)
+        dispatch({type:'clearMessage'});
+      }
+    },[dispatch,error,message])
 
   return (
     <Container minH={'95vh'}  maxW='container.lg' py='8'>
@@ -62,7 +70,7 @@ const {isOpen, onClose,onOpen} =useDisclosure()
         padding='8'
         >
         <VStack>
-            <Avatar boxSize={'48'}/>
+            <Avatar boxSize={'48'} src={user.avatar.url}/>
             <Button onClick={onOpen} colorScheme='yellow' variant={'ghost'}>
                 Change Photo
             </Button>
@@ -88,7 +96,7 @@ const {isOpen, onClose,onOpen} =useDisclosure()
              <HStack>
                 <Text children='Subcription:' fontWeight={'bold'} />
                 {
-                    user.subscription.status==='active'?(
+                 user.subscription &&  user.subscription.status==='active'?(
                         <Button color='yellow.500' variant={'unstyled'}>Cancel Subcirption</Button>
                     ):(
                         <Link to='/subscribe'>
@@ -125,7 +133,7 @@ const {isOpen, onClose,onOpen} =useDisclosure()
             <Image 
             boxSize={'full'}
             objectFit={'contain'}
-            src={item.poster}
+            src={item.poster.url}
             />
             <HStack>
                 <Link to={`/course/${item.course}`}>
@@ -133,7 +141,7 @@ const {isOpen, onClose,onOpen} =useDisclosure()
                 </Link>
                 <Button onClick={()=>removeFromPlaylistHandle(item.course)}>
                     <RiDeleteBin7Fill />
-                    Delete Course
+                    
                 </Button>
             </HStack>
         </VStack>
@@ -142,14 +150,14 @@ const {isOpen, onClose,onOpen} =useDisclosure()
                 </Stack>
             )
         }
-        <ChangePhotoBox isOpen={isOpen} onClose={onClose} changeImageSubmitHandler={changeImageSubmitHandler} />
+        <ChangePhotoBox loading={loading} isOpen={isOpen} onClose={onClose} changeImageSubmitHandler={changeImageSubmitHandler} />
     </Container>
   )
 }
 
 export default Profile
 
-function ChangePhotoBox({isOpen,onClose,changeImageSubmitHandler}){
+function ChangePhotoBox({isOpen,onClose,changeImageSubmitHandler,loading}){
     const [imagePrev,setImagePrev] = useState("")
     const [image,setImage] = useState("")
 
@@ -188,7 +196,7 @@ function ChangePhotoBox({isOpen,onClose,changeImageSubmitHandler}){
                                 css={{'&::file-selector-button':fileUploadCss}}
                                 onChange={changeImage}
                                 />
-                                <Button w='full' colorScheme='yellow' type='submit'>Change</Button>
+                                <Button w='full' colorScheme='yellow' type='submit' isLoading={loading} >Change</Button>
                             </VStack>
                         </form>
                     </Container>

@@ -1,17 +1,47 @@
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { updateProfile } from '../../redux/actions/profileAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
+import { loadUser } from '../../redux/actions/userAction'
 
-const UpdateProfile = () => {
-    const [name,setName]=useState('')
-    const [email,setEmail]=useState('')
+
+const UpdateProfile = ({user}) => {
+    const [name,setName]=useState(user.name)
+    const [email,setEmail]=useState(user.email)
+    const {loading,error,message} = useSelector(state=>state.profile)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const submitHandler=async (e)=>{
+      e.preventDefault();
+
+      await dispatch(updateProfile(name,email))
+      dispatch(loadUser())
+      navigate('/profile')
+  }
+
+
+useEffect(()=>{
+  if (error) {
+    toast.error(error)
+    dispatch({type:'clearError'});
+  }
+  if (message) {
+    toast.success(message)
+    dispatch({type:'clearMessage'});
+  }
+},[dispatch,error,message])
 
     
   return (
     <Container py='16' minH='90vh'>
-    <form action="">
+    <form action="" onSubmit={submitHandler}>
         <Heading 
         children='Update Profile' 
         my='16' 
+        
         textAlign={['center','left']}
         textTransform={'uppercase'}
         />
@@ -34,7 +64,12 @@ const UpdateProfile = () => {
         focusBorderColor='yellow.500'
         />
       
-        <Button my={'4'} w='full' colorScheme='yellow' type='submit'>Update</Button>
+        <Button 
+        my={'4'} w='full'
+        colorScheme='yellow' 
+        type='submit'
+        isLoading={loading}
+        >Update</Button>
 
       </VStack>
     </form>

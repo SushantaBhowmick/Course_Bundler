@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast, {Toaster} from 'react-hot-toast'
 import { loadUser } from './redux/actions/userAction';
 import {ProtectedRoute} from 'protected-route-react'
+import Loader from './components/Layout/Loader';
 
 
 function App() {
@@ -34,7 +35,8 @@ function App() {
     e.preventDefault();
   })
 
-  const {isAuthenticated,user,error,message} = useSelector(state=>state.user)
+  const {isAuthenticated,user,error,message,loading} = useSelector(state=>state.user)
+
   // const isAuthenticated = localStorage.getItem("token");
 
   const dispatch = useDispatch()
@@ -48,6 +50,7 @@ function App() {
       toast.success(message)
       dispatch({type:'clearMessage'});
     }
+   
   },[dispatch,error,message])
 
 useEffect(()=>{
@@ -56,7 +59,11 @@ useEffect(()=>{
 
   return (
     <Router>
-      <Routes>
+    {
+      loading ? (<Loader/>)
+      :(
+        <>
+          <Routes>
        <Route path='/' element={<Layout />}>
        <Route path='' element={<Home />} />
        <Route path='courses' element={<Courses />} />
@@ -66,33 +73,78 @@ useEffect(()=>{
        </ProtectedRoute>} />
 
        <Route path='profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} >
-        <Profile />
+        <Profile user={user} />
        </ProtectedRoute>} />
 
-       <Route path='updateprofile' element={<UpdateProfile />} />
-       <Route path='changepassword' element={<ChanagePassword />} />
-       <Route path='register' element={<Register />} />
+       <Route path='updateprofile' element={
+       <ProtectedRoute isAuthenticated={isAuthenticated}>
+        <UpdateProfile user={user}/>
+       </ProtectedRoute> } />
+
+       <Route path='changepassword' element={
+       <ProtectedRoute isAuthenticated={isAuthenticated}>
+        <ChanagePassword />
+       </ProtectedRoute> } />
+       
+       <Route path='register' element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect='/profile'>
+        <Register />
+       </ProtectedRoute> } />
+
        <Route path='contact' element={<Contact />} />
        <Route path='request' element={<Request />} />
        <Route path='about' element={<About />} />
        <Route path='forgotpassword' element={<ForgotPassword />} />
        <Route path='resetpassword/:token' element={<ResetPassword />} />
-       <Route path='subscribe' element={<SubScribe />} />
+       <Route path='subscribe' element={
+       <ProtectedRoute isAuthenticated={isAuthenticated}>
+        <SubScribe />
+       </ProtectedRoute>} />
        <Route path='*' element={<NotFound />} />
        <Route path='paymentsuccess' element={<PaymentSuccess />} />
        <Route path='paymentfail' element={<PaymentFail />} />
 
        {/* Admin Routes */}
-       <Route path='admin/dashboard' element={<Dashboard />} />
-       <Route path='admin/createcourse' element={<CreateCourse />} />
-       <Route path='admin/courses' element={<AdminCourses />} />
-       <Route path='admin/users' element={<User />} />
+       <Route path='admin/dashboard' element={
+       <ProtectedRoute 
+       isAuthenticated={isAuthenticated} 
+       adminRoute={true} 
+       isAdmin={user && user.role ==="admin"}
+       >
+        <Dashboard />
+       </ProtectedRoute>} />
+
+       <Route path='admin/createcourse' element={ <ProtectedRoute 
+       isAuthenticated={isAuthenticated} 
+       adminRoute={true} 
+       isAdmin={user && user.role ==="admin"}
+       >
+        <CreateCourse />
+       </ProtectedRoute>} />
+
+       <Route path='admin/courses' element={ <ProtectedRoute 
+       isAuthenticated={isAuthenticated} 
+       adminRoute={true} 
+       isAdmin={user && user.role ==="admin"}
+       >
+        <AdminCourses />
+       </ProtectedRoute>} />
+
+       <Route path='admin/users' element={ <ProtectedRoute 
+       isAuthenticated={isAuthenticated} 
+       adminRoute={true} 
+       isAdmin={user && user.role ==="admin"}
+       >
+        <User />
+       </ProtectedRoute>} />
 
        </Route>
       </Routes>
        <Toaster
        position='top-right'
        />  
+        </>
+      )
+    }
     </Router>
     );
 }

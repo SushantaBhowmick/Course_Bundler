@@ -67,8 +67,6 @@ export const logout = catachAsyncErrors(async (req, res, next) => {
             secure: true,
             sameSite: "None",
             withCredentials: true,
-            path: "/",
-        domain:"https://course-bundler-pi.vercel.app"
         }).json({
             success: true,
             message: "Logged Out successfully!"
