@@ -18,5 +18,5 @@ const store = configureStore({
 export default store;
 
 // export const server = 'https://ecommerce-jfiz.onrender.com/api/v1'
-export const server = 'https://course-bundler-pi.vercel.app/api/v1'
+export const server = 'https://course-bundler-phi.vercel.app/api/v1'
 // export const server = 'http://localhost:4000/api/v1'
