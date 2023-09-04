@@ -124,7 +124,7 @@ export const resetPassword = (token, password) => async (dispatch) => {
             },
             withCredentials: true,
         }
-        const { data } = await axios.put(`${server}/resetpassword/:${token}`, {
+        const { data } = await axios.put(`${server}/resetpassword/${token}`, {
             password
         },
             config,

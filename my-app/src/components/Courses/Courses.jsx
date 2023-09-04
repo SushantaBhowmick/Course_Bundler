@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './courses.css'
 import {
     Button,
@@ -12,8 +12,11 @@ import {
     VStack
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllCourses } from '../../redux/actions/courseAction';
 
-const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, description, lecture, lectureCount }) => {
+const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, description, lectureCount }) => {
     return (
         <VStack className='course' alignItems={['center', 'flex-start']}>
             <Image src={imageSrc} boxSize={'60'} objectFit={'contain'} />
@@ -47,7 +50,7 @@ const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, des
             <Heading
                 textAlign={'center'}
                 size={'xs'}
-                children={`Views - ${lectureCount}`}
+                children={`Views - ${views}`}
                 textTransform={'uppercase'}
             />
             <Stack direction={['column', 'row']} alignItems={'center'}>
@@ -68,6 +71,8 @@ const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, des
 const Courses = () => {
     const [keyword, setKeyword] = useState("");
     const [category, setCategory] = useState("");
+    const dispatch = useDispatch();
+    const { loading, courses, error } = useSelector(state => state.course)
 
     const categories = [
         "Web Development",
@@ -78,9 +83,17 @@ const Courses = () => {
         "Game Development",
     ]
 
-const addToPlaylistHandler =()=>{
-    alert("Added To Playlist")
-}
+    const addToPlaylistHandler = (courseId) => {
+        alert(courseId)
+
+    }
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+            dispatch({ type: "clearError" })
+        }
+        dispatch(getAllCourses(category, keyword))
+    }, [category, keyword, dispatch, error]);
 
     return (
         <Container minH={'95vh'} maxW={'container.lg'} paddingY={'8'}>
@@ -107,16 +120,28 @@ const addToPlaylistHandler =()=>{
                 justifyContent={['flex-start', 'space-evenly']}
                 alignItems={['center', 'flex-start']}
             >
-                <Course
-                    title={"Sapmple"}
-                    description={"Sapmple"}
-                    views={23}
-                    creator={"Sapmple Boy"}
-                    imageSrc={"https://cdn.pixabay.com/photo/2017/05/10/19/29/robot-2301646_960_720.jpg"}
-                    id={"Sapmple1"}
-                    lectureCount={2}
-                    addToPlaylistHandler={addToPlaylistHandler}
-                />
+                {
+                    courses.length > 0 ?
+                        courses.map((item) => (
+                            <Course
+                                key={item._id}
+                                id={item._id}
+                                title={item.title}
+                                description={item.description}
+                                views={item.views}
+                                creator={item.createdBy}
+                                imageSrc={item.poster.url}
+                                lectureCount={item.numOfVideos}
+                                addToPlaylistHandler={addToPlaylistHandler}
+                            />
+                        )) : <Heading 
+                        color={'yellow.500'} 
+                        size={'md'} 
+                        mt={"4"}
+                        opacity={"0.5"}
+                        textTransform={'uppercase'} 
+                        children="Course not available right now" />
+                }
             </Stack>
 
         </Container>

@@ -13,6 +13,7 @@ const ResetPassword = () => {
     const {loading,error,message} = useSelector(state=>state.profile)
     const navigate = useNavigate();
     const dispatch= useDispatch();
+
     const submitHandler =(e)=>{
       e.preventDefault();
       dispatch(resetPassword(params.token,password))
