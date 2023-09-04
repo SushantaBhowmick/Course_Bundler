@@ -68,7 +68,9 @@ useEffect(()=>{
        <Route path='' element={<Home />} />
        <Route path='courses' element={<Courses />} />
        <Route path='course/:id' element={<CourseDetails />} />
-       <Route path='login' element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect='/profile'>
+       <Route path='login' element={
+       <ProtectedRoute 
+       isAuthenticated={!isAuthenticated} redirect='/profile'>
         <Login />
        </ProtectedRoute>} />
 
@@ -93,8 +95,20 @@ useEffect(()=>{
        <Route path='contact' element={<Contact />} />
        <Route path='request' element={<Request />} />
        <Route path='about' element={<About />} />
-       <Route path='forgotpassword' element={<ForgotPassword />} />
-       <Route path='resetpassword/:token' element={<ResetPassword />} />
+
+       <Route path='forgotpassword' element={
+       <ProtectedRoute 
+       isAuthenticated={!isAuthenticated} redirect='/profile'>
+        <ForgotPassword />
+       </ProtectedRoute>} />
+
+       <Route path='resetpassword/:token' element={
+        <ProtectedRoute 
+        isAuthenticated={!isAuthenticated} redirect='/profile'>
+         <ResetPassword />
+        </ProtectedRoute>
+       } />
+       
        <Route path='subscribe' element={
        <ProtectedRoute isAuthenticated={isAuthenticated}>
         <SubScribe />

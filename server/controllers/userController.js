@@ -160,7 +160,7 @@ export const forgotPassword = catachAsyncErrors(async (req, res, next) => {
     const resetToken = await user.getResetToken();
     await user.save();
 
-    const url = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`
+    const url = `http://localhost:3000/resetPassword/${resetToken}`
     const message = `Click on the link to reset your password. ${url}. if you have not requested then please ignore`
 
     //send Token via email

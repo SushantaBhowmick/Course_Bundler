@@ -3,80 +3,142 @@ import { server } from '../store'
 
 export const updateProfile = (name, email) => async (dispatch) => {
     try {
-        dispatch({type:"updateProfileRequest"})
+        dispatch({ type: "updateProfileRequest" })
 
-        const {data} = await axios.put(`${server}/updateprofile`,{
-            name,email,
+        const { data } = await axios.put(`${server}/updateprofile`, {
+            name, email,
         },
-        {
-            headers: {
-                 'Content-Type': 'application/json',
-                 },
-            withCredentials: true,
-        }
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }
         )
 
         dispatch({
-            type:"updateProfileSuccess",
-            payload:data.message
+            type: "updateProfileSuccess",
+            payload: data.message
         })
     } catch (error) {
         dispatch({
-            type:"updateProfileFail",
-            payload:error.response.data.message})
-        
+            type: "updateProfileFail",
+            payload: error.response.data.message
+        })
+
     }
 }
 
-export const changePassword = (oldPassword,newPassword) => async (dispatch) => {
+export const changePassword = (oldPassword, newPassword) => async (dispatch) => {
     try {
-        dispatch({type:"changePasswordRequest"})
+        dispatch({ type: "changePasswordRequest" })
 
-        const {data} = await axios.put(`${server}/changepassword`,{
-            oldPassword,newPassword
+        const { data } = await axios.put(`${server}/changepassword`, {
+            oldPassword, newPassword
         },
-        {
-            headers: {
-                 'Content-Type': 'application/json',
-                 },
-            withCredentials: true,
-        }
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }
         )
 
         dispatch({
-            type:"changePasswordSuccess",
-            payload:data.message
+            type: "changePasswordSuccess",
+            payload: data.message
         })
     } catch (error) {
         dispatch({
-            type:"changePasswordFail",
-            payload:error.response.data.message})
-        
+            type: "changePasswordFail",
+            payload: error.response.data.message
+        })
+
     }
 }
 
 export const updateProfilePicture = (formData) => async (dispatch) => {
     try {
-        dispatch({type:"updateProfilePictureRequest"})
+        dispatch({ type: "updateProfilePictureRequest" })
 
-        const {data} = await axios.put(`${server}/updateprofilepicture`,
-           formData,
-        {
-            headers: {
-                 'Content-Type': 'multipart/form-data',
-                 },
-            withCredentials: true,
-        }
+        const { data } = await axios.put(`${server}/updateprofilepicture`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true,
+            }
         )
 
         dispatch({
-            type:"updateProfilePictureSuccess",
-            payload:data.message
+            type: "updateProfilePictureSuccess",
+            payload: data.message
         })
     } catch (error) {
         dispatch({
-            type:"updateProfilePictureFail",
-            payload:error.response.data.message})
-        
+            type: "updateProfilePictureFail",
+            payload: error.response.data.message
+        })
+
+    }
+}
+
+
+export const forgotPassword = (email) => async (dispatch) => {
+    try {
+        dispatch({ type: "forgotPasswordRequest" })
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+        }
+
+        const { data } = await axios.post(`${server}/forgotpassword`,
+            { email },
+            config,
+        )
+
+        dispatch({
+            type: "forgotPasswordSuccess",
+            payload: data.message
+        })
+    } catch (error) {
+        dispatch({
+            type: "forgotPasswordFail",
+            payload: error.response.data.message
+        })
+
+    }
+}
+
+export const resetPassword = (token, password) => async (dispatch) => {
+    try {
+        dispatch({ type: "resetPasswordRequest" })
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+        }
+        const { data } = await axios.put(`${server}/resetpassword/:${token}`, {
+            password
+        },
+            config,
+        )
+
+        dispatch({
+            type: "resetPasswordSuccess",
+            payload: data.message
+        })
+    } catch (error) {
+        dispatch({
+            type: "resetPasswordFail",
+            payload: error.response.data.message
+        })
+
     }
 }
