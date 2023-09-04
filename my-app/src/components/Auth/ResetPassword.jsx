@@ -1,7 +1,7 @@
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { resetPassword } from '../../redux/actions/profileAction';
 import { toast } from 'react-hot-toast';
 
@@ -11,7 +11,7 @@ const ResetPassword = () => {
     const [password,setPassword] = useState("")
 
     const {loading,error,message} = useSelector(state=>state.profile)
-
+    const navigate = useNavigate();
     const dispatch= useDispatch();
     const submitHandler =(e)=>{
       e.preventDefault();
@@ -26,8 +26,9 @@ const ResetPassword = () => {
       if (message) {
         toast.success(message)
         dispatch({type:'clearMessage'});
+        navigate('/login')
       }
-    },[dispatch,error,message])
+    },[dispatch,error,message,navigate])
 
 
   return (
