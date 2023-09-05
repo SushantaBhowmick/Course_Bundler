@@ -112,9 +112,9 @@ useEffect(()=>{
        <ProtectedRoute isAuthenticated={isAuthenticated}>
         <SubScribe user={user} />
        </ProtectedRoute>} />
-       <Route path='*' element={<NotFound />} />
        <Route path='paymentsuccess' element={<PaymentSuccess />} />
        <Route path='paymentfail' element={<PaymentFail />} />
+       <Route path='*' element={<NotFound />} />
 
        {/* Admin Routes */}
        <Route path='admin/dashboard' element={

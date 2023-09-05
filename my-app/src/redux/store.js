@@ -1,6 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
-import { profileReducer, userReducer } from './reducers/userReducers';
-import { courseReducer, subscriptionReducer } from './reducers/courseReducers';
+import { profileReducer, userReducer,subscriptionReducer } from './reducers/userReducers';
+import { courseReducer } from './reducers/courseReducers';
 
 
 // let initialState = {

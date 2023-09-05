@@ -165,3 +165,27 @@ export const profileReducer = createReducer({},{
         state.message= null;
     }
 })
+
+
+export const subscriptionReducer = createReducer({},{
+
+    buySubcriptionRequest:(state)=>{
+        state.loading = true;
+    },
+    buySubcriptionSuccess:(state,action)=>{
+        state.loading = false;
+        state.subcriptionId = action.payload;
+    },
+    buySubcriptionFail:(state,action)=>{
+        state.loading = false;
+        state.error= action.payload;
+    },
+    
+    clearError:(state)=>{
+        state.error=null;
+    },
+    clearMessage:(state)=>{
+        state.message= null;
+    }
+
+})

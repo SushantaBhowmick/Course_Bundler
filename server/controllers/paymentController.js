@@ -11,7 +11,7 @@ export const buySubcription = catachAsyncErrors(async (req, res, next) => {
 
     if(user.role === 'admin') return next(new ErrorHandler("Admin can't buy subscription",400))
  
-    const plan_id = process.env.PLAN_ID;
+    const plan_id = process.env.PLAN_ID ||"plan_MWBjFCZTdGph7D";
 
     const subcription = await instance.subscriptions.create({
         plan_id,
@@ -43,6 +43,7 @@ export const paymentverification = catachAsyncErrors(async (req, res, next) => {
     .digest("hex")
 
     const isAuthntic = generated_signature === razorpay_signature;
+    
     if(!isAuthntic) return res.redirect(`${process.env.FRONTEND_URL}/paymentfail`)
 
     //database comes here
