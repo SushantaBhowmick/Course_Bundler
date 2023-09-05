@@ -1,7 +1,62 @@
 import { Box, Button, Container, Heading, Text, VStack } from '@chakra-ui/react'
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { server } from '../../redux/store';
+import { buySubcription } from '../../redux/actions/userAction';
+import { toast } from 'react-hot-toast';
+import logo from '../../assets/images/logo.png';
 
-const SubScribe = () => {
+const SubScribe = ({user}) => {
+    const dispatch = useDispatch();
+    const {loading,error,subcriptionId} = useSelector(state=>state.subcription);
+
+    const [key,setKey]=useState('');
+
+    const subscribeHandler=async()=> {
+        const {data}=await axios.get(`${server}/razorpaykey`);
+        setKey(data.key)
+        dispatch(buySubcription())
+    }
+    useEffect(()=>{
+        if(error){
+            toast.error(error);
+            dispatch({type:"clearError"});
+        }
+        // if(message){
+        //     toast.success(message);
+        //     dispatch({type:"clearError"});
+        // }
+        if(subcriptionId){
+            const openPopUp = ()=>{
+
+                const options={
+                    key,
+                    name:"CourseBundler",
+                    description:"Get accesss to all premium content",
+                    image:logo,
+                    subcription_id:subcriptionId,
+                    callback_url:`${server}/paymentverification`,
+                    prefill:{
+                        name:user.name,
+                        email:user.email,
+                        contact:"",
+
+                    },
+                    notes:{
+                        address:"Sushanta Bhowmick a Full Stack MERN developer",
+                    },
+                    theme:{
+                        color:'#FFC800'
+                    }
+                }
+            const razor = window.Razorpay(options)
+            razor.open();
+
+            }
+            openPopUp();
+        }
+    },[dispatch,error,key,subcriptionId,user.name,user.email])
     return (
         <Container h='90vh' p='16'>
             <Heading children='Welcome' my={'8'} textAlign={'center'} />
@@ -19,7 +74,10 @@ const SubScribe = () => {
                         <Text children={`Join pro pack and get access to all content.`}  />
                         <Heading size={'md'} children='₹299 Only' />
                     </VStack>
-                    <Button my={'8'} w={'full'} colorScheme='yellow'>
+                    <Button 
+                    onClick={subscribeHandler} 
+                    isLoading={loading}
+                    my={'8'} w={'full'} colorScheme='yellow'>
                         Buy Now
                     </Button>
                 </Box>

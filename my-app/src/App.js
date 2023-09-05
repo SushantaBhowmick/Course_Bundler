@@ -37,7 +37,6 @@ function App() {
 
   const {isAuthenticated,user,error,message,loading} = useSelector(state=>state.user)
 
-  // const isAuthenticated = localStorage.getItem("token");
 
   const dispatch = useDispatch()
 
@@ -111,7 +110,7 @@ useEffect(()=>{
        
        <Route path='subscribe' element={
        <ProtectedRoute isAuthenticated={isAuthenticated}>
-        <SubScribe />
+        <SubScribe user={user} />
        </ProtectedRoute>} />
        <Route path='*' element={<NotFound />} />
        <Route path='paymentsuccess' element={<PaymentSuccess />} />

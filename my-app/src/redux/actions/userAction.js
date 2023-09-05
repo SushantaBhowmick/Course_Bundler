@@ -76,3 +76,22 @@ export const logout = () => async (dispatch) => {
     }
 }
 
+
+export const buySubcription = () => async (dispatch) => {
+    try {
+        dispatch({ type: 'buySubcriptionRequest' });
+
+        const { data } = await axios.get(`${server}/subscribe`,
+         {
+       
+            withCredentials: true,
+        }
+        );
+
+        dispatch({ type: 'buySubcriptionSuccess', payload: data.subscriptionId });
+
+
+    } catch (error) {
+        dispatch({ type: 'buySubcriptionFail', payload: error.response.data.message });
+    }
+}

@@ -23,7 +23,7 @@ import { RiDeleteBin7Fill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import { fileUploadCss } from '../Auth/Register'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateProfilePicture } from '../../redux/actions/profileAction'
+import { removeFromPlaylist, updateProfilePicture } from '../../redux/actions/profileAction'
 import { loadUser } from '../../redux/actions/userAction'
 import { toast } from 'react-hot-toast'
 
@@ -44,8 +44,9 @@ const Profile = ({user}) => {
         dispatch(loadUser())
    }
 
-    const removeFromPlaylistHandle =(id)=>{
-        alert(`Course Deleted Successfully ${id}`)
+    const removeFromPlaylistHandler = async(id)=>{
+        await dispatch(removeFromPlaylist(id))
+        dispatch(loadUser())
     }
 
     useEffect(()=>{
@@ -133,15 +134,15 @@ const Profile = ({user}) => {
             <Image 
             boxSize={'full'}
             objectFit={'contain'}
-            src={item.poster.url}
+            src={item.poster}
+            alt={"playlist poster"}
             />
             <HStack>
                 <Link to={`/course/${item.course}`}>
                     <Button variant={'ghost'} colorScheme='yellow'>Watch Now</Button>
                 </Link>
-                <Button onClick={()=>removeFromPlaylistHandle(item.course)}>
-                    <RiDeleteBin7Fill />
-                    
+                <Button isLoading={loading} onClick={()=>removeFromPlaylistHandler(item.course)}>
+                    <RiDeleteBin7Fill /> 
                 </Button>
             </HStack>
         </VStack>

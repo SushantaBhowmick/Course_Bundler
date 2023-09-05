@@ -15,8 +15,10 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllCourses } from '../../redux/actions/courseAction';
+import { addToPlaylist } from '../../redux/actions/profileAction';
+import { loadUser } from '../../redux/actions/userAction';
 
-const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, description, lectureCount }) => {
+const Course = ({ views, title, imageSrc, id, addToPlaylistHandler,loading, creator, description, lectureCount }) => {
     return (
         <VStack className='course' alignItems={['center', 'flex-start']}>
             <Image src={imageSrc} boxSize={'60'} objectFit={'contain'} />
@@ -59,7 +61,7 @@ const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, des
                         Watch Now
                     </Button>
                 </Link>
-                <Button colorScheme='yellow' variant={'ghost'} onClick={() => addToPlaylistHandler(id)} >
+                <Button isLoading={loading} colorScheme='yellow' variant={'ghost'} onClick={() => addToPlaylistHandler(id)} >
                     Add To Playlist
                 </Button>
             </Stack>
@@ -72,7 +74,7 @@ const Courses = () => {
     const [keyword, setKeyword] = useState("");
     const [category, setCategory] = useState("");
     const dispatch = useDispatch();
-    const { loading, courses, error } = useSelector(state => state.course)
+    const { loading, courses, error,message } = useSelector(state => state.course)
 
     const categories = [
         "Web Development",
@@ -83,8 +85,9 @@ const Courses = () => {
         "Game Development",
     ]
 
-    const addToPlaylistHandler = (courseId) => {
-        alert(courseId)
+    const addToPlaylistHandler = async(courseId) => {
+    await dispatch(addToPlaylist(courseId))
+    dispatch(loadUser())
 
     }
     useEffect(() => {
@@ -92,8 +95,12 @@ const Courses = () => {
             toast.error(error);
             dispatch({ type: "clearError" })
         }
+        if (message) {
+            toast.success(message);
+            dispatch({ type: "clearMessage" })
+        }
         dispatch(getAllCourses(category, keyword))
-    }, [category, keyword, dispatch, error]);
+    }, [category, keyword,message, dispatch, error,]);
 
     return (
         <Container minH={'95vh'} maxW={'container.lg'} paddingY={'8'}>
@@ -133,6 +140,7 @@ const Courses = () => {
                                 imageSrc={item.poster.url}
                                 lectureCount={item.numOfVideos}
                                 addToPlaylistHandler={addToPlaylistHandler}
+                                loading={loading}
                             />
                         )) : <Heading 
                         color={'yellow.500'} 

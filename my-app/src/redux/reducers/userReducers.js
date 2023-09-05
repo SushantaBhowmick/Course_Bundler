@@ -145,7 +145,18 @@ export const profileReducer = createReducer({},{
 
     },
 
+    removeFromRequest:(state)=>{
+        state.loading = true;
+    },
+    removeFromSuccess:(state,action)=>{
+        state.loading = false;
+        state.message = action.payload;
+    },
+    removeFromFail:(state,action)=>{
+        state.loading = false;
+        state.error= action.payload;
 
+    },
 
     clearError:(state)=>{
         state.error=null;
