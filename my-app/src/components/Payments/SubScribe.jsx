@@ -16,6 +16,7 @@ const SubScribe = ({ user }) => {
     const subscribeHandler = async () => {
         const { data } = await axios.get(`${server}/razorpaykey`,{withCredentials:true});
         setKey(data.key)
+        console.log(data.key)
         dispatch(buySubcription())
     }
 
@@ -24,10 +25,6 @@ const SubScribe = ({ user }) => {
             toast.error(error);
             dispatch({ type: "clearError" });
         }
-        // if(message){
-        //     toast.success(message);
-        //     dispatch({type:"clearError"});
-        // }
         if (subcriptionId) {
             const openPopUp = () => {
 
@@ -36,7 +33,7 @@ const SubScribe = ({ user }) => {
                     name: "CourseBundler",
                     description: "Get accesss to all premium content",
                     image: logo,
-                    subcription_id: subcriptionId,
+                    subscription_id: subcriptionId,
                     callback_url: `${server}/paymentverification`,
                     prefill: {
                         name: user.name,
