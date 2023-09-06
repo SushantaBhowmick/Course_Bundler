@@ -95,7 +95,7 @@ const Profile = ({user}) => {
 
            {user.role !== "admin" && (
              <HStack>
-                <Text children='Subcription:' fontWeight={'bold'} />
+                <Text children='Subscription:' fontWeight={'bold'} />
                 {
                  user.subscription &&  user.subscription.status==='active'?(
                         <Button color='yellow.500' variant={'unstyled'}>Cancel Subcirption</Button>

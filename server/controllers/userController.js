@@ -263,7 +263,7 @@ export const deleteMyProfile = catachAsyncErrors(async (req, res, next) => {
 
     await cloudinary.v2.uploader.destroy(user.avatar.public_id)
 
-    //cancel Subcription
+    //cancel Subscription
 
     await user.deleteOne()
 
@@ -319,7 +319,7 @@ export const deleteUser = catachAsyncErrors(async (req, res, next) => {
 
     await cloudinary.v2.uploader.destroy(user.avatar.public_id)
 
-    //cancel Subcription
+    //cancel Subscription
 
     await user.deleteOne()
 
@@ -333,7 +333,7 @@ User.watch().on("change", async () => {
 
     const stats = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
 
-    const subscription = await User.find({ "subcription.status": "active" });
+    const subscription = await User.find({ "subscription.status": "active" });
 
     stats[0].users = await User.countDocuments();
     stats[0].subscription = subscription.length;

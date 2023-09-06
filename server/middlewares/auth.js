@@ -17,7 +17,7 @@ export const isAuthenticated = catachAsyncErrors(async(req,res,next)=>{
 })
 
 export const authorizeSubscribe = (req,res,next)=>{
-    if(req.user.subcription.status !== "active" && req.user.role!=="admin"){
+    if(req.user.subscription.status !== "active" && req.user.role!=="admin"){
         return next(
         new ErrorHandler(`only subscriber can access this resource`,403)
         )

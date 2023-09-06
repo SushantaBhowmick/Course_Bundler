@@ -10,7 +10,7 @@ import logo from '../../assets/images/logo.png';
 const SubScribe = ({ user }) => {
     const dispatch = useDispatch();
     const [key, setKey] = useState('');
-    const { loading, error, subscriptionId } = useSelector(state => state.subcription);
+    const { loading, error, subscriptionId } = useSelector(state => state.subscription);
 
 
     const subscribeHandler = async () => {

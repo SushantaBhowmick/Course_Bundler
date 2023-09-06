@@ -100,7 +100,7 @@ export const cancelSubscription = catachAsyncErrors(async(req,res,next)=>{
 
     res.status(200).json({
         success:true,
-        message:refund? "Subcription cancelled, You Will recived full refund within 7 days."
-                :"Subcription cancelled, Now refund initiated as subcription was cancelled after 7 days"
+        message:refund? "Subscription cancelled, You Will recived full refund within 7 days."
+                :"Subscription cancelled, Now refund initiated as subscription was cancelled after 7 days"
     })
 })

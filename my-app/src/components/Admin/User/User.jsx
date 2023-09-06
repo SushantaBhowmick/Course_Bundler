@@ -64,7 +64,7 @@ const users =[{
                   <Th>Name</Th>
                   <Th>Email</Th>
                   <Th>Role</Th>
-                  <Th>Subcription</Th>
+                  <Th>Subscription</Th>
                   <Th isNumeric>Action</Th>
                 </Tr>
               </Thead>

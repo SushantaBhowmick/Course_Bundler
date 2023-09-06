@@ -60,7 +60,7 @@ const Dashboard = () => {
         >
           |<Databox title="Views" qty={123} qtyPercentage={30} profit={true} />
           |<Databox title="User" qty={23} qtyPercentage={70} profit={true} />
-          |<Databox title="Subcription" qty={12} qtyPercentage={20} profit={false} />
+          |<Databox title="Subscription" qty={12} qtyPercentage={20} profit={false} />
         </Stack>
         <Box
         m={['0','16']}
@@ -90,7 +90,7 @@ const Dashboard = () => {
             <Box>
               <Bar profit={true} title={'Views'} value={30} />
               <Bar profit={true} title={'User'} value={78} />
-              <Bar profit={false} title={'Subcription'} value={20} />
+              <Bar profit={false} title={'Subscription'} value={20} />
             </Box>
           </Box>
 
