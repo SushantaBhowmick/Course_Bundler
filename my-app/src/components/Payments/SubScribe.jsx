@@ -3,21 +3,20 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { server } from '../../redux/store';
-import { buySubcription } from '../../redux/actions/userAction';
+import { buySubscription } from '../../redux/actions/userAction';
 import { toast } from 'react-hot-toast';
 import logo from '../../assets/images/logo.png';
 
 const SubScribe = ({ user }) => {
     const dispatch = useDispatch();
     const [key, setKey] = useState('');
-    const { loading, error, subcriptionId } = useSelector(state => state.subcription);
+    const { loading, error, subscriptionId } = useSelector(state => state.subcription);
 
 
     const subscribeHandler = async () => {
         const { data } = await axios.get(`${server}/razorpaykey`,{withCredentials:true});
         setKey(data.key)
-        console.log(data.key)
-        dispatch(buySubcription())
+        dispatch(buySubscription())
     }
 
     useEffect(() => {
@@ -25,7 +24,7 @@ const SubScribe = ({ user }) => {
             toast.error(error);
             dispatch({ type: "clearError" });
         }
-        if (subcriptionId) {
+        if (subscriptionId) {
             const openPopUp = () => {
 
                 const options = {
@@ -33,7 +32,7 @@ const SubScribe = ({ user }) => {
                     name: "CourseBundler",
                     description: "Get accesss to all premium content",
                     image: logo,
-                    subscription_id: subcriptionId,
+                    subscription_id: subscriptionId,
                     callback_url: `${server}/paymentverification`,
                     prefill: {
                         name: user.name,
@@ -54,7 +53,7 @@ const SubScribe = ({ user }) => {
             }
             openPopUp();
         }
-    }, [dispatch, error, key, subcriptionId, user.name, user.email])
+    }, [dispatch, error, key, subscriptionId, user.name, user.email])
     return (
         <Container h='90vh' p='16'>
             <Heading children='Welcome' my={'8'} textAlign={'center'} />

@@ -2,20 +2,20 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-    razorpay_signature:{
+    razorpay_signature: {
         type: String,
-        required:true,
-    },razorpay_payment_id:{
+        required: true,
+    }, razorpay_payment_id: {
         type: String,
-        required:true,
-    },razorpay_subcription_id:{
+        required: true,
+    }, razorpay_subscription_id: {
         type: String,
-        required:true,    
+        required: true,
     },
-createdAt:{
-    type:Date,
-    default:Date.now,
-},
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 })
 
-export const Payment = mongoose.model("Payment",schema);
+export const Payment = mongoose.model("Payment", schema);

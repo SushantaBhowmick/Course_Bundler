@@ -5,7 +5,7 @@ import ErrorHandler from "../utils/ErrorHandler.js";
 import crypto from 'crypto';
 import {Payment} from '../models/Payment.js'
 
-export const buySubcription = catachAsyncErrors(async (req, res, next) => {
+export const buySubscription = catachAsyncErrors(async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
 
@@ -13,34 +13,36 @@ export const buySubcription = catachAsyncErrors(async (req, res, next) => {
  
     const plan_id = process.env.PLAN_ID ||"plan_MWBjFCZTdGph7D";
 
-    const subcription = await instance.subscriptions.create({
+    const subscription = await instance.subscriptions.create({
         plan_id,
         customer_notify: 1,
         total_count: 12,
+      });
+    
+      user.subscription.id = subscription.id;
+    
+      user.subscription.status = subscription.status;
+    
+      await user.save();
+    
+      res.status(201).json({
+        success: true,
+        subscriptionId: subscription.id,
+      });
     });
-    user.subcription.id = subcription.id;
-    user.subcription.status = subcription.status;
-
-    await user.save();
-
-    res.status(201).json({
-        success:true,
-        subcriptionId: subcription.id
-    })
-})
-
 
 export const paymentverification = catachAsyncErrors(async (req, res, next) => {
 
-    const {razorpay_signature,razorpay_payment_id,razorpay_subcription_id}= req.body;
+    const {razorpay_signature,razorpay_payment_id,razorpay_subscription_id}= req.body;
 
     const user = await User.findById(req.user._id);
-    const subcription_id = user.subcription.id;
+    const subscription_id = user.subscription.id;
 
     const generated_signature = crypto
-    .createHmac("sha256",process.env.RAZORPAY_API_SECRET)
-    .update(razorpay_payment_id + "|" + subcription_id,"utf-8")
-    .digest("hex")
+    .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
+    .update(razorpay_payment_id + "|" + subscription_id, "utf-8")
+    .digest("hex");
+
     console.log(generated_signature)
     console.log(razorpay_signature)
 
@@ -52,10 +54,10 @@ export const paymentverification = catachAsyncErrors(async (req, res, next) => {
     await Payment.create({
         razorpay_signature,
         razorpay_payment_id,
-        razorpay_subcription_id,
+        razorpay_subscription_id,
     })
 
-    user.subcription.status = "active";
+    user.subscription.status = "active";
     await user.save()
    
     res.redirect(`${process.env.FRONTEND_URL}/paymentsuccess?refernce=${razorpay_payment_id}`)
@@ -70,15 +72,16 @@ export const getRazorpayKey = catachAsyncErrors(async(req,res,next)=>{
     })
 })
 
-export const cancelSubcription = catachAsyncErrors(async(req,res,next)=>{
+export const cancelSubscription = catachAsyncErrors(async(req,res,next)=>{
 
     const user = await User.findById(req.user._id);
-    const subcriptionId = user.subcription.id;
+    const subscriptionId = user.subscription.id;
+
  let refund = false;
- await instance.subscriptions.cancel(subcriptionId)
+ await instance.subscriptions.cancel(subscriptionId)
 
  const payment = await Payment.findOne({
-    razorpay_subcription_id: subcriptionId,
+    razorpay_subscription_id: subscriptionId,
  });
 
  const gap = Date.now() - payment.createdAt;
@@ -90,8 +93,8 @@ export const cancelSubcription = catachAsyncErrors(async(req,res,next)=>{
  }
 
  await payment.deleteOne();
- user.subcription.id= undefined;
- user.subcription.status= undefined;
+ user.subscription.id= undefined;
+ user.subscription.status= undefined;
  
 
 

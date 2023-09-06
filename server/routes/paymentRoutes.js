@@ -1,15 +1,15 @@
 import express from "express";
 import { isAuthenticated } from "../middlewares/auth.js";
 import { 
-    buySubcription, 
-    cancelSubcription, 
+    buySubscription,
+    cancelSubscription,
     getRazorpayKey, 
     paymentverification 
 } from "../controllers/paymentController.js";
 
 const router = express.Router();
 
-router.route('/subscribe').get(isAuthenticated,buySubcription)
+router.route('/subscribe').get(isAuthenticated,buySubscription)
 
 //verify payment adn save reference in database
 router.route('/paymentverification').post(isAuthenticated,paymentverification)
@@ -18,6 +18,6 @@ router.route('/paymentverification').post(isAuthenticated,paymentverification)
 //get Razorpay key
 router.route('/razorpaykey').get(isAuthenticated,getRazorpayKey)
 //cancel subcription
-router.route('/subscribe/cancel').delete(isAuthenticated,cancelSubcription)
+router.route('/subscribe/cancel').delete(isAuthenticated,cancelSubscription)
 
 export default router;

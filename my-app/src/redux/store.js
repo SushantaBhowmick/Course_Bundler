@@ -14,7 +14,7 @@ const store = configureStore({
         user: userReducer,
         profile: profileReducer,
         course: courseReducer,
-        subcription:subscriptionReducer,
+        subscription:subscriptionReducer,
     }
 })
 

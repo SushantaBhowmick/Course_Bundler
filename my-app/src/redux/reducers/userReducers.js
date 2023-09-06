@@ -169,14 +169,14 @@ export const profileReducer = createReducer({},{
 
 export const subscriptionReducer = createReducer({},{
 
-    buySubcriptionRequest:(state)=>{
+    buySubscriptionRequest:(state)=>{
         state.loading = true;
     },
-    buySubcriptionSuccess:(state,action)=>{
+    buySubscriptionSuccess:(state,action)=>{
         state.loading = false;
-        state.subcriptionId = action.payload;
+        state.subscriptionId = action.payload;
     },
-    buySubcriptionFail:(state,action)=>{
+    buySubscriptionFail:(state,action)=>{
         state.loading = false;
         state.error= action.payload;
     },
