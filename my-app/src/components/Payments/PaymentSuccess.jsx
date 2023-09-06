@@ -1,9 +1,11 @@
 import { Box, Button, Container, Heading, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { RiCheckboxFill } from 'react-icons/ri'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 const PaymentSuccess = () => {
+
+    const ref = useSearchParams()[0].get("refernce");
   return (
     <Container h='90vh' p={'16'}>
         <Heading my={'8'} textAlign={'center'}>
@@ -30,7 +32,7 @@ const PaymentSuccess = () => {
                     Go to profile
                 </Button>
             </Link>
-            <Heading size={'xs'} children={'Reference: kuchbhidedo,ok'} />
+            <Heading size={'xs'} >Reference: {ref}</Heading>
         </VStack>
 
     </Container>

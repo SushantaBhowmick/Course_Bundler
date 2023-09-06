@@ -91,3 +91,19 @@ export const buySubscription = () => async (dispatch) => {
         dispatch({ type: 'buySubscriptionFail', payload: error.response.data.message });
     }
 }
+
+
+export const cancelSubscription = () => async (dispatch) => {
+    try {
+        dispatch({ type: 'cancelSubscriptionRequest' });
+
+        const { data } = await axios.delete(`${server}/subscribe/cancel`,{
+             withCredentials: true,
+        });
+
+        dispatch({ type: 'cancelSubscriptionSuccess', 
+        payload: data.message });
+    } catch (error) {
+        dispatch({ type: 'cancelSubscriptionFail', payload: error.response.data.message });
+    }
+}
