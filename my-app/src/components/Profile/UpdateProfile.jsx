@@ -18,7 +18,6 @@ const UpdateProfile = ({user}) => {
       e.preventDefault();
 
       await dispatch(updateProfile(name,email))
-      dispatch(loadUser())
       navigate('/profile')
   }
 
@@ -31,8 +30,9 @@ useEffect(()=>{
   if (message) {
     toast.success(message)
     dispatch({type:'clearMessage'});
+    dispatch(loadUser())
   }
-},[dispatch,error,message])
+},[dispatch,error,message,navigate])
 
     
   return (

@@ -51,9 +51,8 @@ const Profile = ({user}) => {
     dispatch(cancelSubscription())
    }
 
-    const removeFromPlaylistHandler = async(id)=>{
-        await dispatch(removeFromPlaylist(id))
-        dispatch(loadUser())
+    const removeFromPlaylistHandler = (id)=>{
+         dispatch(removeFromPlaylist(id))
     }
 
     useEffect(()=>{
@@ -64,6 +63,7 @@ const Profile = ({user}) => {
       if (message) {
         toast.success(message)
         dispatch({type:'clearMessage'});
+        dispatch(loadUser())
       }
       if (subscriptionError) {
         toast.error(subscriptionError)
@@ -105,7 +105,7 @@ const Profile = ({user}) => {
                 <Text children={user.email} />
             </HStack>
             <HStack>
-                <Text children='CreatedAt:' fontWeight={'bold'}/>
+                <Text children='Join In:' fontWeight={'bold'}/>
                 <Text children={user.createdAt.split("T")[0]} />
             </HStack>
 

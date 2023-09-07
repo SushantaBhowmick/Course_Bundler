@@ -1,6 +1,10 @@
 import { Box, Grid, Heading, Text, VStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import introVideo from "../../assets/videos/intro.mp4"
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { getCoursesLectures } from '../../redux/actions/courseAction'
+
 
 
 const CourseDetails = () => {
@@ -34,7 +38,12 @@ const CourseDetails = () => {
         }
     },
 ]
+const dispatch = useDispatch();
+const params = useParams();
 
+useEffect(()=>{
+    dispatch(getCoursesLectures(params.id))
+},[dispatch,params.id])
   return (
     <Grid minH={'90vh'} templateColumns={['1fr','3fr 1fr']}>
         <Box>
