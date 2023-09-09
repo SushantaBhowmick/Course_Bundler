@@ -40,7 +40,7 @@ useEffect(() => {
             <Heading children={'Request New Course'} />
             <form style={{width:"100%"}} onSubmit={submitHandler}>
             <Box my={'4'}>
-            <FormLabel htmlFor='name' children={"Children"}/>
+            <FormLabel htmlFor='name' children={"Name"}/>
             <Input 
             required
             id='name'

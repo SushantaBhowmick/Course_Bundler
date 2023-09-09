@@ -41,7 +41,7 @@ useEffect(() => {
             <Heading children={'Contact Us'} />
             <form style={{width:"100%"}} onSubmit={submitHandler}>
             <Box my={'4'}>
-            <FormLabel htmlFor='name' children={"Children"}/>
+            <FormLabel htmlFor='name' children={"Name"}/>
             <Input 
             required
             id='name'
