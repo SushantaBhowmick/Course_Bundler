@@ -17,13 +17,19 @@ export const otherReducer=createReducer({},{
     courseRequest:state=>{
         state.loading=true;
     },
-    courseSuccess:(state,action)=>{
+    courseRequestSuccess:(state,action)=>{
         state.loading=false;
         state.message= action.payload;
     },
-    courseFail:(state,action)=>{
+    courseRequestFail:(state,action)=>{
         state.loading=false;
         state.error= action.payload;
 
     },
+    clearError:(state)=>{
+        state.error=null;
+    },
+    clearMessage:(state)=>{
+        state.message= null;
+    }
 })

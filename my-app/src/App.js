@@ -76,7 +76,8 @@ function App() {
                       <Login />
                     </ProtectedRoute>} />
 
-                  <Route path='profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} >
+                  <Route path='profile' element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated} >
                     <Profile user={user} />
                   </ProtectedRoute>} />
 
@@ -90,12 +91,19 @@ function App() {
                       <ChanagePassword />
                     </ProtectedRoute>} />
 
-                  <Route path='register' element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect='/profile'>
+                  <Route path='register' element={
+                  <ProtectedRoute isAuthenticated={!isAuthenticated} redirect='/profile'>
                     <Register />
                   </ProtectedRoute>} />
 
-                  <Route path='contact' element={<Contact />} />
-                  <Route path='request' element={<Request />} />
+                  <Route path='contact' element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Contact />
+                  </ProtectedRoute>} />
+                  <Route path='request' element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Request />
+                  </ProtectedRoute>} />
                   <Route path='about' element={<About />} />
 
                   <Route path='forgotpassword' element={
