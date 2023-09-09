@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import cursor from '../../../assets/images/cursor.png'
 import { 
   Box,
@@ -20,6 +20,8 @@ import {
 import Sidebar from '../Sidebar'
 import { RiDeleteBin7Fill } from 'react-icons/ri'
 import CourseModal from './CourseModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllCourses } from '../../../redux/actions/courseAction'
 
 
 
@@ -39,21 +41,13 @@ const courseDetailsHandler=(userId)=>{
   //  alert(courseId,lecturesId)
   e.preventDefault()
  }
- const courses =[{
-  _id: "alsbdnfkijahsdfo",
-  poster:
-   { url:"https://cdn.pixabay.com/photo/2017/05/10/19/29/robot-2301646_960_720.jpg"}
-  ,
-  title: "React Course",
-  category:"Web Development",
-  createdBy:"Sushanta Bhowmick",
-  views:52,
-  numOfVideos:12,
-  subscription:{
-    status:'active'
-  }
-  }]
-  
+const  {courses} = useSelector(state=>state.course);
+
+const dispatch = useDispatch();
+
+useEffect(()=>{
+  dispatch(getAllCourses())
+},[dispatch])
   
   return (
     <Grid

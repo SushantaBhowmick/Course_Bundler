@@ -1,8 +1,11 @@
-import { Box, Button, Container, Grid, Heading, Image, Input, Select, VStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Button, Container, Grid, Heading, Image, Input, Select, VStack } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../Sidebar'
 import cursor from '../../../assets/images/cursor.png'
 import { fileUploadCss } from '../../Auth/Register'
+import { createCourse } from '../../../redux/actions/adminAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-hot-toast'
 
 
 const CreateCourse = () => {
@@ -13,7 +16,9 @@ const CreateCourse = () => {
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
   const [imagePrev, setImagePrev] = useState("");
-
+  
+  const dispatch = useDispatch();
+  const {error,loading,message}= useSelector(state=>state.admin)
   
   const categories = [
     "Web Development",
@@ -33,6 +38,35 @@ const changeImageHandler=(e)=>{
       setImage(file)
   }
 }
+
+
+const submitHandler =(e)=>{
+  e.preventDefault();
+
+  const myForm = new FormData();
+
+  myForm.append("title",title);
+  myForm.append("description",description);
+  myForm.append("createdBy",createdBy);
+  myForm.append("category",category);
+  myForm.append("file",image);
+
+  dispatch(createCourse(myForm))
+}
+
+useEffect(() => {
+  if (error) {
+    toast.error(error)
+    dispatch({type:'clearError'});
+  }
+  if (message) {
+    toast.success(message)
+    dispatch({type:'clearMessage'});
+  }
+ 
+},[dispatch,error,message])
+
+
   return (
     <Grid
       minH={'100vh'}
@@ -40,7 +74,7 @@ const changeImageHandler=(e)=>{
       css={{ cursor: `url(${cursor}), default` }}
     >
       <Container py={'16'}>
-        <form action="">
+        <form action="" onSubmit={submitHandler}>
           <Heading
             textTransform={'uppercase'}
             children='Create Course'
@@ -100,7 +134,7 @@ const changeImageHandler=(e)=>{
                 <Image src={imagePrev} boxSize={'64'} objectFit={'contain'} />
               )
             }
-            <Button w={'full'} colorScheme='purple' type='submit'>
+            <Button isLoading={loading} w={'full'} colorScheme='purple' type='submit'>
               Create
             </Button>
           </VStack>

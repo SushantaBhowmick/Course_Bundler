@@ -11,6 +11,7 @@ const SubScribe = ({ user }) => {
     const dispatch = useDispatch();
     const [key, setKey] = useState('');
     const { loading, error, subscriptionId } = useSelector(state => state.subscription);
+    const { error:courseError} = useSelector(state => state.course);
 
 
     const subscribeHandler = async () => {
@@ -22,6 +23,10 @@ const SubScribe = ({ user }) => {
     useEffect(() => {
         if (error) {
             toast.error(error);
+            dispatch({ type: "clearError" });
+        }
+        if (courseError) {
+            toast.error(courseError);
             dispatch({ type: "clearError" });
         }
         if (subscriptionId) {
@@ -53,7 +58,7 @@ const SubScribe = ({ user }) => {
             }
             openPopUp();
         }
-    }, [dispatch, error, key, subscriptionId, user.name, user.email])
+    }, [dispatch, error, key, subscriptionId, user.name, user.email,courseError])
     return (
         <Container h='90vh' p='16'>
             <Heading children='Welcome' my={'8'} textAlign={'center'} />
