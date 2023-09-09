@@ -174,9 +174,6 @@ export const updateUserRole = (id) => async (dispatch) => {
 export const deleteUser = (id) => async (dispatch) => {
     try {
         const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
             withCredentials: true,
         };
 
@@ -194,6 +191,32 @@ export const deleteUser = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: "deleteUserFail",
+            payload: error.response.data.message
+        })
+
+    }
+}
+
+export const getDashboardStats = () => async (dispatch) => {
+    try {
+        const config = {
+            withCredentials: true,
+        };
+
+        dispatch({ type: "getAdminStatsRequest" })
+
+        const { data } = await axios.get(
+            `${server}/admin/stats`,
+            config,
+            )
+
+        dispatch({
+            type: "getAdminStatsSuccess",
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: "getAdminStatsFail",
             payload: error.response.data.message
         })
 
