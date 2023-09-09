@@ -133,7 +133,7 @@ export const deleteLectures = catachAsyncErrors(async (req, res, next) => {
     })
 
     course.lectures = course.lectures.filter((item)=>{
-        if(item._id.toString() === lectureId.toString()) return item
+        if(item._id.toString() !== lectureId.toString()) return item
     })
     course.numOfVideos = course.lectures.length;
     await course.save();

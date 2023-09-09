@@ -11,7 +11,7 @@ title:{
 description:{
     type:String,
     required:[true,"Please enter course description"],
-    minLength:[20,"Title must be atleast 4 character"],
+    minLength:[20,"Title must be atleast 20 character"],
 },
 lectures:[
     {

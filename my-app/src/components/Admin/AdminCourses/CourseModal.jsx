@@ -25,6 +25,7 @@ const CourseModal = ({ isOpen,
     deleteLectureHandler,
     addLectureHandler,
     courseTitle,
+    loading,
     lectures = [] }) => {
 
     const [title, setTitle] = useState('')
@@ -66,14 +67,20 @@ const CourseModal = ({ isOpen,
                             </Box>
                             <Heading children={`Lectures`} size={'lg'} />
 
-                            <VideoCard
-                                title="ReactIntro"
-                                description="This is a intro lecture, where you will know the basic of react"
-                                num={1}
-                                lecturesId="shlecturesjsdf"
-                                courseId={id}
-                                deleteHandler={deleteLectureHandler}
-                            />
+                            {
+                                lectures.map((item, i) => (
+                                    <VideoCard
+                                        key={i}
+                                        title={item.title}
+                                        description={item.description}
+                                        num={i + 1}
+                                        lecturesId={item._id}
+                                        courseId={id}
+                                        deleteLectureHandler={deleteLectureHandler}
+                                        loading={loading}
+                                    />
+                                ))
+                            }
                         </Box>
                         <Box>
                             <form action="" onSubmit={e => addLectureHandler(e, id, title, description, video)}>
@@ -108,13 +115,17 @@ const CourseModal = ({ isOpen,
                                         }}
                                         onChange={changeVideoHandler}
                                     />
-                                    {videoPrev &&(
+                                    {videoPrev && (
                                         <video src={videoPrev}
-                                        controlsList='nodownload'
-                                        controls
+                                            controlsList='nodownload'
+                                            controls
                                         ></video>
-    )}
-    <Button w='full' type='submit' colorScheme='purple'>Upload</Button>
+                                    )}
+                                    <Button
+                                        w='full'
+                                        type='submit'
+                                        colorScheme='purple'
+                                        isLoading={loading}>Upload</Button>
                                 </VStack>
                             </form>
                         </Box>
@@ -122,7 +133,7 @@ const CourseModal = ({ isOpen,
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={handleClose}>
-                    Close
+                        Close
                     </Button>
                 </ModalFooter>
             </ModalContent>
@@ -133,7 +144,7 @@ const CourseModal = ({ isOpen,
 
 export default CourseModal
 
-function VideoCard({ title, description, num, lecturesId, courseId, deleteLectureHandler }) {
+function VideoCard({ loading, title, description, num, lecturesId, courseId, deleteLectureHandler }) {
     return <Stack
         direction={['column', 'row']}
         my={'8'} borderRadius={'lg'}
@@ -145,7 +156,9 @@ function VideoCard({ title, description, num, lecturesId, courseId, deleteLectur
             <Heading size={'sm'} children={`#${num} ${title}`} />
             <Text children={description} />
         </Box>
-        <Button color={'purple.600'} onClick={() => deleteLectureHandler(courseId, lecturesId)}>
+        <Button
+            isLoading={loading}
+            color={'purple.600'} onClick={() => deleteLectureHandler(courseId, lecturesId)}>
             <RiDeleteBin7Fill />
         </Button>
 
