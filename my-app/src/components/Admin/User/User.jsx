@@ -19,7 +19,6 @@ import Sidebar from '../Sidebar'
 import { RiDeleteBin7Fill } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser, getAllUsers, updateUserRole } from '../../../redux/actions/adminAction'
-import Loader from '../../Layout/Loader'
 import toast from 'react-hot-toast'
 
 const User = () => {

@@ -20,7 +20,7 @@ import {
 } from 'react-icons/ri'
 import { MdAndroid } from "react-icons/md";
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/actions/userAction';
 
 const Header = ({ isAuthenticated = false, user }) => {

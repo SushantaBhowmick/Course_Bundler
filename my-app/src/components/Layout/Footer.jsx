@@ -1,4 +1,4 @@
-import { Box, HStack, Heading, Stack, VStack, color } from '@chakra-ui/react'
+import { Box, HStack, Heading, Stack, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {TiSocialYoutubeCircular,TiSocialInstagramCircular,TiSocialTwitterCircular } from 'react-icons/ti'
